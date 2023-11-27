@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748492909671",
+    "project_id": "udemy-course-50e00",
+    "storage_bucket": "udemy-course-50e00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748492909671:android:bc2fd0eaa4a5501086f8c2",
+        "android_client_info": {
+          "package_name": "com.example.udemy_flutter_dart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn5yzTkd13ZkmuSs9gKUSuMbFo1jafpCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
