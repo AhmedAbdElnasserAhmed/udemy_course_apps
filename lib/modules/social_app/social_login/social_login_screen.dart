@@ -1,14 +1,17 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/social_layout.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/states.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/social_register_screen.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
+import 'package:udemy_flutter_dart/shared/components/constants.dart';
 import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 
-class SocialLoginScreen extends StatelessWidget {
+class SocialLoginScreen extends StatelessWidget
+{
   SocialLoginScreen({super.key});
 
   var formKey = GlobalKey<FormState>();
@@ -16,12 +19,15 @@ class SocialLoginScreen extends StatelessWidget {
   var passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return BlocProvider(
       create: (BuildContext context) => SocialLoginCubit(),
       child: BlocConsumer<SocialLoginCubit, SocialLoginStates>(
-        listener: (context, state) {
-          if (state is SocialLoginErrorState) {
+        listener: (context, state)
+        {
+          if (state is SocialLoginErrorState)
+          {
             showToast(
               text: state.error,
               state: ToastStates.error,
@@ -32,7 +38,8 @@ class SocialLoginScreen extends StatelessWidget {
             CacheHelper.saveData(
               key: 'uId',
               value: state.uId,
-            ).then((value) {
+            ).then((value)
+            {
               navigateAndFinish(
                 context,
                 const SocialLayout(),
@@ -40,7 +47,8 @@ class SocialLoginScreen extends StatelessWidget {
             });
           }
         },
-        builder: (context, state) {
+        builder: (context, state)
+        {
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -89,12 +97,15 @@ class SocialLoginScreen extends StatelessWidget {
                           controller: passwordController,
                           type: TextInputType.visiblePassword,
                           isPassword: SocialLoginCubit.get(context).isPassword,
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String value)
+                          {
+                            if (value.isEmpty)
+                            {
                               return 'password is too short';
                             }
                           },
-                          onSubmit: (value) {
+                          onSubmit: (value)
+                          {
                             // if (formKey.currentState!.validate()) {
                             //   SocialLoginCubit.get(context).userLogin(
                             //     email: emailController.text,
@@ -105,7 +116,8 @@ class SocialLoginScreen extends StatelessWidget {
                           label: 'Password',
                           prefix: Icons.lock_outline,
                           suffix: SocialLoginCubit.get(context).suffix,
-                          suffixPressed: () {
+                          suffixPressed: ()
+                          {
                             SocialLoginCubit.get(context)
                                 .changePasswordVisibility();
                           },
@@ -116,8 +128,10 @@ class SocialLoginScreen extends StatelessWidget {
                         ConditionalBuilder(
                           condition: state is! SocialLoginLoadingState,
                           builder: (context) => circularDefaultButton(
-                            function: () {
-                              if (formKey.currentState!.validate()) {
+                            function: ()
+                            {
+                              if (formKey.currentState!.validate())
+                              {
                                 SocialLoginCubit.get(context).userLogin(
                                   email: emailController.text,
                                   password: passwordController.text,

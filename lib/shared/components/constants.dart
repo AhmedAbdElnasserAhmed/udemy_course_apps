@@ -16,6 +16,7 @@
 
 import 'package:udemy_flutter_dart/modules/shop_app/login/shop_login_screen.dart';
 import 'package:udemy_flutter_dart/modules/shop_app/on_boarding/on_boarding_screen.dart';
+import 'package:udemy_flutter_dart/modules/social_app/social_login/social_login_screen.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
 import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 
@@ -37,6 +38,17 @@ void signOut(context)
     if(value)
     {
       navigateAndFinish(context, ShopLoginScreen());
+    }
+  });
+}
+
+void socialSignOut(context)
+{
+  CacheHelper.removeData(key: 'uId').then((value)
+  {
+    if(value)
+    {
+      navigateAndFinish(context, SocialLoginScreen());
     }
   });
 }
