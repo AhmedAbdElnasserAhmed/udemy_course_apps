@@ -1,62 +1,82 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
+import 'package:udemy_flutter_dart/layout/social_app/cubit/states.dart';
+import 'package:udemy_flutter_dart/models/social_app/post_model.dart';
 import 'package:udemy_flutter_dart/shared/styles/colors.dart';
 import 'package:udemy_flutter_dart/shared/styles/icon_broken.dart';
 
-class FeedsScreen extends StatelessWidget {
+class FeedsScreen extends StatelessWidget
+{
   const FeedsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            elevation: 5.0,
-            margin: const EdgeInsets.all(8.0),
-            child: Stack(
-              alignment: AlignmentDirectional.bottomEnd,
+  Widget build(BuildContext context)
+  {
+    return BlocConsumer<SocialCubit , SocialStates>(
+      listener: (context , state) {},
+      builder: (context , state)
+      {
+        var cubit = SocialCubit.get(context);
+
+        return ConditionalBuilder(
+          // condition: cubit.posts.isNotEmpty,
+          condition: cubit.posts.isNotEmpty && cubit.userModel != null,
+          builder: (context) => SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
               children: [
-                const Image(
-                  image: NetworkImage(
-                    'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
+                Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  elevation: 5.0,
+                  margin: const EdgeInsets.all(8.0),
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    children: [
+                      const Image(
+                        image: NetworkImage(
+                          'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
+                        ),
+                        fit: BoxFit.cover,
+                        height: 200.0,
+                        width: double.infinity,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'communicate with friends',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
-                  fit: BoxFit.cover,
-                  height: 200.0,
-                  width: double.infinity,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'communicate with friends',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: Colors.white),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context , index) => buildPostItem(cubit.posts[index] , context , index),
+                  separatorBuilder: (context , index) => const SizedBox(
+                    height: 8.0,
                   ),
+                  itemCount: cubit.posts.length,
+                ),
+                const SizedBox(
+                  height: 8.0,
                 ),
               ],
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context , index) => buildPostItem(context),
-            separatorBuilder: (context , index) => const SizedBox(
-              height: 8.0,
-            ),
-            itemCount: 10,
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-        ],
-      ),
+          fallback: (context) => const Center(child: CircularProgressIndicator()),
+        );
+      },
     );
   }
 
-  Widget buildPostItem(context) => Card(
+  Widget buildPostItem(PostModel model , context , index) => Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 5.0,
         margin: const EdgeInsets.symmetric(
@@ -65,13 +85,15 @@ class FeedsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 25.0,
                     backgroundImage: NetworkImage(
-                      'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
+                      '${model.image}',
+                      // 'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
                     ),
                   ),
                   const SizedBox(
@@ -81,18 +103,18 @@ class FeedsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             Text(
-                              'Ahmed Abd Elnasser',
-                              style: TextStyle(
+                              '${model.name}',
+                              style: const TextStyle(
                                 height: 1.4,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5.0,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.check_circle,
                               color: defaultColor,
                               size: 16.0,
@@ -100,7 +122,7 @@ class FeedsScreen extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          'January 21, 2021 at 11:00 pm',
+                          '${model.dataTime}',
                           style:
                               Theme.of(context).textTheme.bodySmall!.copyWith(
                                     height: 1.4,
@@ -129,100 +151,108 @@ class FeedsScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                '${model.text}',
+                // 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              Padding(
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     top: 5.0,
+              //     bottom: 10.0,
+              //   ),
+              //   child: SizedBox(
+              //     width: double.infinity,
+              //     child: Wrap(
+              //       children: [
+              //         Padding(
+              //           padding: const EdgeInsetsDirectional.only(
+              //             end: 3.0,
+              //           ),
+              //           child: SizedBox(
+              //             height: 20.0,
+              //             child: MaterialButton(
+              //               onPressed: () {},
+              //               minWidth: 1.0,
+              //               padding: EdgeInsets.zero,
+              //               child: Text(
+              //                 '#software',
+              //                 style: Theme.of(context)
+              //                     .textTheme
+              //                     .bodySmall!
+              //                     .copyWith(
+              //                       color: defaultColor,
+              //                     ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding: const EdgeInsetsDirectional.only(
+              //             end: 3.0,
+              //           ),
+              //           child: SizedBox(
+              //             height: 20.0,
+              //             child: MaterialButton(
+              //               onPressed: () {},
+              //               minWidth: 1.0,
+              //               padding: EdgeInsets.zero,
+              //               child: Text(
+              //                 '#flutter',
+              //                 style: Theme.of(context)
+              //                     .textTheme
+              //                     .bodySmall!
+              //                     .copyWith(
+              //                       color: defaultColor,
+              //                     ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding: const EdgeInsetsDirectional.only(
+              //             end: 5.0,
+              //           ),
+              //           child: SizedBox(
+              //             height: 20.0,
+              //             child: MaterialButton(
+              //               onPressed: () {},
+              //               minWidth: 1.0,
+              //               padding: EdgeInsets.zero,
+              //               child: Text(
+              //                 '#software_development',
+              //                 style: Theme.of(context)
+              //                     .textTheme
+              //                     .bodySmall!
+              //                     .copyWith(
+              //                       color: defaultColor,
+              //                     ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              if(model.postImage != null)
+                Padding(
                 padding: const EdgeInsets.only(
-                  top: 5.0,
-                  bottom: 10.0,
+                  top: 15.0,
                 ),
-                child: SizedBox(
+                child: Container(
+                  height: 140.0,
                   width: double.infinity,
-                  child: Wrap(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                          end: 3.0,
-                        ),
-                        child: SizedBox(
-                          height: 20.0,
-                          child: MaterialButton(
-                            onPressed: () {},
-                            minWidth: 1.0,
-                            padding: EdgeInsets.zero,
-                            child: Text(
-                              '#software',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: defaultColor,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                          end: 3.0,
-                        ),
-                        child: SizedBox(
-                          height: 20.0,
-                          child: MaterialButton(
-                            onPressed: () {},
-                            minWidth: 1.0,
-                            padding: EdgeInsets.zero,
-                            child: Text(
-                              '#flutter',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: defaultColor,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                          end: 5.0,
-                        ),
-                        child: SizedBox(
-                          height: 20.0,
-                          child: MaterialButton(
-                            onPressed: () {},
-                            minWidth: 1.0,
-                            padding: EdgeInsets.zero,
-                            child: Text(
-                              '#software_development',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: defaultColor,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                height: 140.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    4.0,
-                  ),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                      'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      4.0,
                     ),
-                    fit: BoxFit.cover,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        '${model.postImage}',
+                        // 'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -249,7 +279,7 @@ class FeedsScreen extends StatelessWidget {
                                 width: 5.0,
                               ),
                               Text(
-                                '1200',
+                                '${SocialCubit.get(context).likes[index]}',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
@@ -276,7 +306,7 @@ class FeedsScreen extends StatelessWidget {
                                 width: 5.0,
                               ),
                               Text(
-                                '521comments',
+                                '0 comments',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
@@ -304,10 +334,10 @@ class FeedsScreen extends StatelessWidget {
                     child: InkWell(
                       child: Row(
                         children: [
-                          const CircleAvatar(
+                          CircleAvatar(
                             radius: 18.0,
                             backgroundImage: NetworkImage(
-                              'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
+                              '${SocialCubit.get(context).userModel!.image}',
                             ),
                           ),
                           const SizedBox(
@@ -347,7 +377,10 @@ class FeedsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: ()
+                    {
+                      SocialCubit.get(context).likePost(SocialCubit.get(context).postsId[index]);
+                    },
                   ),
                   InkWell(
                     child: Padding(

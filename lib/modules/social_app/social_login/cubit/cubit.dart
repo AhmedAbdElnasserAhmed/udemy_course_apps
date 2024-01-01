@@ -2,9 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/states.dart';
+import 'package:udemy_flutter_dart/shared/components/components.dart';
+import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 
-class SocialLoginCubit extends Cubit<SocialLoginStates> {
+class SocialLoginCubit extends Cubit<SocialLoginStates>
+{
   SocialLoginCubit() : super(SocialLoginInitialState());
 
   static SocialLoginCubit get(context) => BlocProvider.of(context);
@@ -40,7 +44,8 @@ class SocialLoginCubit extends Cubit<SocialLoginStates> {
   IconData suffix = Icons.visibility_outlined;
   bool isPassword = true;
 
-  void changePasswordVisibility() {
+  void changePasswordVisibility()
+  {
     isPassword = !isPassword;
     suffix =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;

@@ -17,6 +17,7 @@ import 'package:udemy_flutter_dart/modules/shop_app/login/shop_login_screen.dart
 import 'package:udemy_flutter_dart/modules/shop_app/on_boarding/on_boarding_screen.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/social_login_screen.dart';
 import 'package:udemy_flutter_dart/shared/bloc_observer.dart';
+import 'package:udemy_flutter_dart/shared/components/components.dart';
 import 'package:udemy_flutter_dart/shared/components/constants.dart';
 import 'package:udemy_flutter_dart/shared/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/shared/cubit/states.dart';
@@ -25,12 +26,57 @@ import 'package:udemy_flutter_dart/shared/network/remote/dio_helper.dart';
 import 'package:udemy_flutter_dart/shared/styles/themes.dart';
 import 'layout/news_app/news_layout.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async
+{
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+
+  print('on background message');
+  print(message.data.toString());
+
+  showToast(
+    text: 'on background message',
+    state: ToastStates.success,
+  );
+}
 
 void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+
+  var token = await FirebaseMessaging.instance.getToken();
+
+  print('My Device Token : $token');
+
+  // foreground fcm
+  FirebaseMessaging.onMessage.listen((event) {
+    print('on message');
+    print(event.data.toString());
+
+    showToast(
+      text: 'on message',
+      state: ToastStates.success,
+    );
+  });
+
+  // when click on notification to open app
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print('on message opened app');
+    print(event.data.toString());
+
+    showToast(
+      text: 'on message opened app',
+      state: ToastStates.success,
+    );
+  });
+
+  // background fcm
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
@@ -46,11 +92,9 @@ void main() async {
 
   uId = CacheHelper.getData(key: 'uId');
 
-  if(uId != null)
-  {
+  if (uId != null) {
     widget = const SocialLayout();
-  }else
-  {
+  } else {
     widget = SocialLoginScreen();
   }
 
@@ -74,27 +118,33 @@ void main() async {
   // }
 
   runApp(MyApp(
-    isDark : isDark,
-    startWidget : widget,
+    isDark: isDark,
+    startWidget: widget,
   ));
 
-  MyApp app = MyApp(isDark : isDark , startWidget : widget,);
-  Widget a = MyApp(isDark : isDark , startWidget : widget,);
+  MyApp app = MyApp(
+    isDark: isDark,
+    startWidget: widget,
+  );
+  Widget a = MyApp(
+    isDark: isDark,
+    startWidget: widget,
+  );
 }
 
 //stateless Widget
 //stateful Widget
 
 //class MyApp
-class MyApp extends StatelessWidget
-{
+class MyApp extends StatelessWidget {
   bool? isDark;
   Widget? startWidget;
 
-  MyApp({super.key,
+  MyApp({
+    super.key,
     this.isDark,
     this.startWidget,
-});
+  });
 
   // MyApp(this.isDark, {super.key});
   //constructor
@@ -103,8 +153,7 @@ class MyApp extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers:
-      [
+      providers: [
         BlocProvider(
           create: (context) => NewsCubit()
             ..getBusiness()
@@ -126,7 +175,8 @@ class MyApp extends StatelessWidget
         ),
         BlocProvider(
           create: (BuildContext context) => SocialCubit()
-            ..getUserData(),
+            ..getUserData()
+            ..getPosts(),
         ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
@@ -140,10 +190,10 @@ class MyApp extends StatelessWidget
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: Directionality(
-                textDirection: TextDirection.ltr,
+              textDirection: TextDirection.ltr,
               //child: false ? ShopLoginScreen() : const OnBoardingScreen(),
               child: startWidget!,
-              //child: NewsLayout(),
+              // child: NewsLayout(),
             ),
           );
         },

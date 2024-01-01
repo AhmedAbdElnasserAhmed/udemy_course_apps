@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udemy_flutter_dart/models/social_app/social_user_model.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/cubit/states.dart';
 
-class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
+class SocialRegisterCubit extends Cubit<SocialRegisterStates>
+{
   SocialRegisterCubit() : super(SocialRegisterInitialState());
 
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
@@ -32,7 +33,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         phone: phone,
       );
       //emit(SocialRegisterSuccessState());
-    }).catchError((error) {
+    }).catchError((error)
+    {
       emit(SocialRegisterErrorState(error.toString()));
     });
   }
@@ -70,7 +72,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   IconData suffix = Icons.visibility_outlined;
   bool isPassword = true;
 
-  void changePasswordVisibility() {
+  void changePasswordVisibility()
+  {
     isPassword = !isPassword;
     suffix =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
