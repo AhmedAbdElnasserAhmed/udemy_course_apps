@@ -1,20 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:udemy_flutter_dart/layout/news_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/shop_app/cubit/cubit.dart';
-import 'package:udemy_flutter_dart/layout/shop_app/shop_layout.dart';
 import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/social_layout.dart';
-import 'package:udemy_flutter_dart/layout/todo_app/todo_layout.dart';
-import 'package:udemy_flutter_dart/modules/shop_app/login/shop_login_screen.dart';
-import 'package:udemy_flutter_dart/modules/shop_app/on_boarding/on_boarding_screen.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/social_login_screen.dart';
 import 'package:udemy_flutter_dart/shared/bloc_observer.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
@@ -24,7 +17,7 @@ import 'package:udemy_flutter_dart/shared/cubit/states.dart';
 import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 import 'package:udemy_flutter_dart/shared/network/remote/dio_helper.dart';
 import 'package:udemy_flutter_dart/shared/styles/themes.dart';
-import 'layout/news_app/news_layout.dart';
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async
 {
@@ -194,6 +187,7 @@ class MyApp extends StatelessWidget {
               //child: false ? ShopLoginScreen() : const OnBoardingScreen(),
               child: startWidget!,
               // child: NewsLayout(),
+              // child: NativeCodeScreen(),
             ),
           );
         },

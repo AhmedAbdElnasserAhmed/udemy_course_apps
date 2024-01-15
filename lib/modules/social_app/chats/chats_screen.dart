@@ -28,8 +28,11 @@ class ChatsScreen extends StatelessWidget
             separatorBuilder: (context, index) => myDivider(),
             itemCount: cubit.allUsers.length,
           ),
-          fallback: (context) => const Center(
-            child: CircularProgressIndicator(),
+          fallback: (context) => ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => buildUserShimmerItem(),
+            separatorBuilder: (context, index) => myDivider(),
+            itemCount: 5,
           ),
         );
       },
@@ -68,4 +71,31 @@ class ChatsScreen extends StatelessWidget
           ),
         ),
       );
+
+  Widget buildUserShimmerItem() => Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Row(
+      children: [
+        CircleAvatar(
+          radius: 25.0,
+          backgroundColor: Colors.grey[200],
+        ),
+        const SizedBox(
+          width: 15.0,
+        ),
+        Expanded(
+          child: Container(
+            height: 25.0,
+            width: 200.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                15.0,
+              ),
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

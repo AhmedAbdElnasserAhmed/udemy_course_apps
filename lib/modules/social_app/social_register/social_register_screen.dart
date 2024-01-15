@@ -1,13 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/social_layout.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/cubit/states.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
 
-class SocialRegisterScreen extends StatelessWidget
-{
+class SocialRegisterScreen extends StatelessWidget {
   SocialRegisterScreen({super.key});
 
   var formKey = GlobalKey<FormState>();
@@ -18,8 +18,7 @@ class SocialRegisterScreen extends StatelessWidget
   var phoneController = TextEditingController();
 
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SocialRegisterCubit(),
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
@@ -32,8 +31,16 @@ class SocialRegisterScreen extends StatelessWidget
               state: ToastStates.error,
             );
           }
+
           if (state is SocialCreateUserSuccessState)
           {
+            showToast(
+              text: 'Register Successfully',
+              state: ToastStates.success,
+            );
+
+            SocialCubit.get(context).getUserData();
+
             navigateAndFinish(
               context,
               const SocialLayout(),
@@ -97,8 +104,7 @@ class SocialRegisterScreen extends StatelessWidget
           //   }
           // }
         },
-        builder: (context, state)
-        {
+        builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -132,8 +138,7 @@ class SocialRegisterScreen extends StatelessWidget
                         circularDefaultFormField(
                           controller: nameController,
                           type: TextInputType.name,
-                          validate: (String value)
-                          {
+                          validate: (String value) {
                             if (value.isEmpty) {
                               return 'pleas enter your name';
                             }
@@ -163,8 +168,7 @@ class SocialRegisterScreen extends StatelessWidget
                           type: TextInputType.visiblePassword,
                           isPassword:
                               SocialRegisterCubit.get(context).isPassword,
-                          validate: (String value)
-                          {
+                          validate: (String value) {
                             if (value.isEmpty) {
                               return 'password is too short';
                             }
@@ -205,10 +209,8 @@ class SocialRegisterScreen extends StatelessWidget
                         ConditionalBuilder(
                           condition: state is! SocialRegisterLoadingState,
                           builder: (context) => circularDefaultButton(
-                            function: ()
-                            {
-                              if (formKey.currentState!.validate())
-                              {
+                            function: () {
+                              if (formKey.currentState!.validate()) {
                                 SocialRegisterCubit.get(context).userRegister(
                                   name: nameController.text,
                                   email: emailController.text,

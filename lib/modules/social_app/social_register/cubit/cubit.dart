@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udemy_flutter_dart/models/social_app/social_user_model.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/cubit/states.dart';
+import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 
 class SocialRegisterCubit extends Cubit<SocialRegisterStates>
 {
   SocialRegisterCubit() : super(SocialRegisterInitialState());
 
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
+
 
   void userRegister({
     required String name,
@@ -26,6 +28,11 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>
     )
         .then((value)
     {
+      CacheHelper.saveData(
+        key: 'uId',
+        value: value.user!.uid,
+      );
+
       userCreate(
         uId: value.user!.uid,
         name: name,
@@ -33,8 +40,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>
         phone: phone,
       );
       //emit(SocialRegisterSuccessState());
-    }).catchError((error)
-    {
+    }).catchError((error) {
       emit(SocialRegisterErrorState(error.toString()));
     });
   }
@@ -44,27 +50,29 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>
     required String email,
     required String phone,
     required String uId,
-  })
-  {
+  }) {
     SocialUserModel model = SocialUserModel(
       name: name,
       email: email,
       phone: phone,
       uId: uId,
       bio: 'write you bio ...',
-      image: 'https://image.freepik.com/free-photo/photo-attractive-bearded-young- man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures- indoor_273609-16239.jpg',
-      cover: 'https://image.freepik.com/free-photo/photo-attractive-bearded-young- man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures- indoor_273609-16239.jpg',
+      image:
+          'https://image.freepik.com/free-photo/photo-attractive-bearded-young- man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures- indoor_273609-16239.jpg',
+      cover:
+          'https://img.freepik.com/free-photo/flat-lay-office-desk-assortment-with-empty-screen-tablet_23-2148707960.jpg',
+          // 'https://image.freepik.com/free-photo/photo-attractive-bearded-young- man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures- indoor_273609-16239.jpg',
       isEmailVerified: false,
     );
 
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
-        .set(model.toMap()).then((value)
+        .set(model.toMap())
+        .then((value)
     {
-          emit(SocialCreateUserSuccessState());
-    }).catchError((error)
-    {
+      emit(SocialCreateUserSuccessState());
+    }).catchError((error) {
       emit(SocialCreateUserErrorState(error.toString()));
     });
   }
@@ -72,8 +80,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>
   IconData suffix = Icons.visibility_outlined;
   bool isPassword = true;
 
-  void changePasswordVisibility()
-  {
+  void changePasswordVisibility() {
     isPassword = !isPassword;
     suffix =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
