@@ -34,7 +34,16 @@ class ChatDetailsScreen extends StatelessWidget
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
-                titleSpacing: 0.0,
+                leading: IconButton(
+                  onPressed: ()
+                  {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    IconBroken.Arrow___Left_2,
+                  ),
+                ),
+                titleSpacing: 5.0,
                 title: Row(
                   children: [
                     CircleAvatar(
@@ -157,8 +166,75 @@ class ChatDetailsScreen extends StatelessWidget
                     ],
                   ),
                 ),
-                fallback: (context) => const Center(
-                  child: CircularProgressIndicator(),
+                fallback: (context) => Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context , index)
+                          {
+                            var message = cubit.messages[index];
+                            if(cubit.userModel!.uId == message.senderId)
+                            {
+                              return buildMyMessage(message);
+                            }else
+                            {
+                              return buildMessage(message);
+                            }
+                          },
+                          separatorBuilder: (context , index) => const SizedBox(
+                            height: 15.0,
+                          ),
+                          itemCount: cubit.messages.length,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: messageController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    15.0,
+                                  ),
+                                ),
+                                hintText: 'type your message here ...',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15.0,
+                          ),
+                          MaterialButton(
+                            onPressed: ()
+                            {
+                              cubit.sendMessage(
+                                receiverId: userModel!.uId.toString(),
+                                dataTime: Timestamp.now().toDate().toString(),
+                                text: messageController.text,
+                              );
+                              messageController.clear();
+                            },
+                            minWidth: 1.0,
+                            height: 57.0,
+                            color: defaultColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                15.0,
+                              ),
+                            ),
+                            child: const Icon(
+                              IconBroken.Send,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

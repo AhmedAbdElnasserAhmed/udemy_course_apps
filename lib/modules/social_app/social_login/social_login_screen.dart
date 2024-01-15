@@ -1,13 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/social_layout.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/states.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_register/social_register_screen.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
-import 'package:udemy_flutter_dart/shared/components/constants.dart';
 import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget

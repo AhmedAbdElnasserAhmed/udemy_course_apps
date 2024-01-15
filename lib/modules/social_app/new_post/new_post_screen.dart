@@ -41,6 +41,8 @@ class NewPostScreen extends StatelessWidget
                       text: textController.text,
                     );
                   }
+
+                  textController.clear();
                 },
                 text: 'post',
               ),
@@ -56,21 +58,24 @@ class NewPostScreen extends StatelessWidget
                   const SizedBox(
                   height: 10.0,
                 ),
-                const Row(
+                Row(
                   children: [
                     CircleAvatar(
                       radius: 25.0,
                       backgroundImage: NetworkImage(
-                        'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
+                        '${cubit.userModel!.image}',
                       ),
+                      // backgroundImage: NetworkImage(
+                      //   'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
+                      // ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15.0,
                     ),
                     Expanded(
                       child: Text(
-                        'Ahmed Abd Elnasser',
-                        style: TextStyle(
+                        '${cubit.userModel!.name}',
+                        style: const TextStyle(
                           height: 1.4,
                         ),
                       ),

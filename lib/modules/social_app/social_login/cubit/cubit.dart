@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/cubit/states.dart';
-import 'package:udemy_flutter_dart/shared/components/components.dart';
-import 'package:udemy_flutter_dart/shared/network/local/cache_helper.dart';
+
 
 class SocialLoginCubit extends Cubit<SocialLoginStates>
 {
@@ -24,6 +22,8 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
       password: password,
     ).then((value)
     {
+      // getUserData(uId: value.user!.uid);
+
       if (kDebugMode)
       {
         print(value.user!.email);
@@ -52,4 +52,29 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
 
     emit(SocialChangePasswordVisibilityState());
   }
+
+  // SocialUserModel? userModel;
+
+//   void getUserData({
+//     required String uId,
+// })
+//   {
+//     emit(SocialGetUserLoadingState());
+//
+//     FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(uId)
+//         .get()
+//         .then((value)
+//     {
+//         SocialUserModel.fromJson(value.data()!);
+//       emit(SocialGetUserSuccessState());
+//     }).catchError((error)
+//     {
+//       if (kDebugMode) {
+//         print(error.toString());
+//       }
+//       emit(SocialGetUserErrorState(error.toString()));
+//     });
+//   }
 }

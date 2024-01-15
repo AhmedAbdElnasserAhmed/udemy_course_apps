@@ -19,3 +19,14 @@ class SocialLoginErrorState extends SocialLoginStates
 }
 
 class SocialChangePasswordVisibilityState extends SocialLoginStates {}
+
+class SocialGetUserLoadingState extends SocialLoginStates {}
+
+class SocialGetUserSuccessState extends SocialLoginStates {}
+
+class SocialGetUserErrorState extends SocialLoginStates
+{
+  final String error;
+
+  SocialGetUserErrorState(this.error);
+}
