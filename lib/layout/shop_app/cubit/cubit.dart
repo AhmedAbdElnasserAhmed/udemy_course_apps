@@ -34,7 +34,7 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopChangeBottomNavState());
   }
 
-  HomeModel? homeModel;
+  late HomeModel homeModel;
 
   Map<int, bool> favorites = {};
 
@@ -56,7 +56,7 @@ class ShopCubit extends Cubit<ShopStates> {
       // }
       // printFullText(homeModel.toString());
 
-      homeModel?.data.products.forEach((element) {
+      homeModel.data.products.forEach((element) {
         favorites.addAll({
           element.id: element.inFavorites,
         });
@@ -73,7 +73,7 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  CategoriesModel? categoriesModel;
+  late CategoriesModel categoriesModel;
 
   void getCategories()
   {

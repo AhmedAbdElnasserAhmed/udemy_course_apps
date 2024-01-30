@@ -18,9 +18,7 @@ class SettingsScreen extends StatelessWidget {
       builder: (context, state) {
         var userModel = SocialCubit.get(context).userModel;
 
-        return userModel == null
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
+        return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [

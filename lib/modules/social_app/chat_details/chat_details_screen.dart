@@ -76,7 +76,7 @@ class ChatDetailsScreen extends StatelessWidget
                           itemBuilder: (context , index)
                           {
                             var message = cubit.messages[index];
-                            if(cubit.userModel!.uId == message.senderId)
+                            if(cubit.userModel.uId == message.senderId)
                             {
                               return buildMyMessage(message);
                             }else
@@ -176,7 +176,7 @@ class ChatDetailsScreen extends StatelessWidget
                           itemBuilder: (context , index)
                           {
                             var message = cubit.messages[index];
-                            if(cubit.userModel!.uId == message.senderId)
+                            if(cubit.userModel.uId == message.senderId)
                             {
                               return buildMyMessage(message);
                             }else
