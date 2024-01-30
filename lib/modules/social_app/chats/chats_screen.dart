@@ -30,7 +30,7 @@ class ChatsScreen extends StatelessWidget
           ),
           fallback: (context) => ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) => buildUserShimmerItem(),
+            itemBuilder: (context, index) => _buildUserShimmerItem(),
             separatorBuilder: (context, index) => myDivider(),
             itemCount: 5,
           ),
@@ -72,7 +72,7 @@ class ChatsScreen extends StatelessWidget
         ),
       );
 
-  Widget buildUserShimmerItem() => Padding(
+  Widget _buildUserShimmerItem() => Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(
       children: [

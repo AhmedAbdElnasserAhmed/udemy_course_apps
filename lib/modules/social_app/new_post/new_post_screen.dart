@@ -63,7 +63,7 @@ class NewPostScreen extends StatelessWidget
                     CircleAvatar(
                       radius: 25.0,
                       backgroundImage: NetworkImage(
-                        '${cubit.userModel!.image}',
+                        '${cubit.userModel.image}',
                       ),
                       // backgroundImage: NetworkImage(
                       //   'https://image.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg',
@@ -74,7 +74,7 @@ class NewPostScreen extends StatelessWidget
                     ),
                     Expanded(
                       child: Text(
-                        '${cubit.userModel!.name}',
+                        '${cubit.userModel.name}',
                         style: const TextStyle(
                           height: 1.4,
                         ),

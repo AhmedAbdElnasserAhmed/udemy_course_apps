@@ -8,6 +8,7 @@ import 'package:udemy_flutter_dart/layout/news_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/shop_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/cubit/cubit.dart';
 import 'package:udemy_flutter_dart/layout/social_app/social_layout.dart';
+import 'package:udemy_flutter_dart/modules/native_code.dart';
 import 'package:udemy_flutter_dart/modules/social_app/social_login/social_login_screen.dart';
 import 'package:udemy_flutter_dart/shared/bloc_observer.dart';
 import 'package:udemy_flutter_dart/shared/components/components.dart';
@@ -182,12 +183,12 @@ class MyApp extends StatelessWidget {
             //themeMode: ThemeMode.light,
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
-            home: Directionality(
+            home: const Directionality(
               textDirection: TextDirection.ltr,
               //child: false ? ShopLoginScreen() : const OnBoardingScreen(),
-              child: startWidget!,
+              // child: startWidget!,
               // child: NewsLayout(),
-              // child: NativeCodeScreen(),
+              child: NativeCodeScreen(),
             ),
           );
         },

@@ -303,7 +303,7 @@ PreferredSizeWidget defaultAppBar({
         ),
       ),
       title: Text(
-        title!,
+        title ?? '',
       ),
       titleSpacing: 5.0,
       actions: actions,
